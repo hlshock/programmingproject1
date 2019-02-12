@@ -39,8 +39,7 @@ public class Server {
         serverSocket.receive(receivePacket);
         String message = new String(receivePacket.getData());
         //check for closing request - do we respond if we get closing request?
-        if(message == "close")
-        {
+        if(message == "close") {
           break;
         }
         //sending response
