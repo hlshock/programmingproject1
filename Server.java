@@ -4,12 +4,17 @@ public class Server {
   DatagramPacket receivePacket;
   DatagramPacket sendPacket;
 
+  byte[] receiveData;
+  byte[] sendData;
+
   /**
    * Sets up the server so it can receive messages from a specified port
    * @param portNum
    */
   public Server(int portNum) {
     serverSocket = new DatagramSocket(portNum);
+    receiveData = new byte[255];
+    sendData = new byte[255];
   }
 
   public void run() {
