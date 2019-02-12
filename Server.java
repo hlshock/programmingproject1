@@ -38,14 +38,14 @@ public class Server {
         // receive data
         serverSocket.receive(receivePacket);
         String message = new String(receivePacket.getData());
-        //check for closing request - do we respond if we get closing request?
-        if(message == "close") {
+        //check for "end" request - do we respond if we get "end"" request?
+        if(message == "end") {
           break;
         }
-        //sending response
+        //sending response - unsure about this part
         InetAddress address = receivePacket.getAddress();
         int port = receivePacket.getPort();
-        //What do we reply?
+        
         String reply = "Reply";
         sendData = reply.getBytes();
         sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
