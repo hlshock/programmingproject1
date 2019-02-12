@@ -16,10 +16,11 @@ public class Server {
     receiveData = new byte[255];
     sendData = new byte[255];
   }
-
+  /**
+   * Starts the server listening on its port
+   */
   public void run() {
-    receivePacket = new DatagramPacket();
-    sendPacket = new DatagramPacket();
+
     while(true) {
       //initiliaze DatagramPacket to recieve data from the Client
       receivePacket = new DatagramPacket(receiveData, receiveData.length);
