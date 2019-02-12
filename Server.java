@@ -42,10 +42,10 @@ public class Server {
         if(message == "end") {
           break;
         }
-        //sending response
+        //sending response - unsure about this part
         InetAddress address = receivePacket.getAddress();
         int port = receivePacket.getPort();
-        //What do we reply?
+        
         String reply = "Reply";
         sendData = reply.getBytes();
         sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
