@@ -4,8 +4,6 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 public class Client {
-<<<<<<< HEAD
-=======
 
   DatagramSocket serverSocket;
   DatagramPacket packet;
@@ -39,5 +37,4 @@ public class Client {
     public static void main(String[] args) {
 
     }
->>>>>>> ede35d1eb49c03cefa2d7c6f889eb72f66264259
 }
