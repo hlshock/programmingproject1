@@ -33,15 +33,12 @@ public class Client {
   }
 
   public void sendMessage(String message){
-<<<<<<< HEAD
     try {
       Message messageToSend = new Message(message);
-=======
     boolean contSending = true;
     int counter = 0;
     while(contSending == true && counter < 3)
       Message messageToSend = new Message(message.toString());
->>>>>>> c8c737fc529a08a0be5a9cd839de3bece2a57dd7
       //create packet to send
       sendPacket = new DatagramPacket(messageToSend.getBytes(), messageToSend.getBytes().length, InetAddress.getByName(hostname), port);
       serverSocket.send(sendPacket);
@@ -51,17 +48,14 @@ public class Client {
       receivePacket = new DatagramPacket(receiveData, receiveData.length);
       serverSocket.receive(receivePacket);
       String response = new String(receivePacket.getData());
-<<<<<<< HEAD
       System.out.println("Response from Server: " + response);
     } catch (Exception e) {
       e.printStackTrace();
-=======
       System.out.println("From Server: " + response);
       contSending = false;
     } catch (SocketTimeoutException e){
       System.out.println("Exception: " e);
 
->>>>>>> c8c737fc529a08a0be5a9cd839de3bece2a57dd7
     }
 
 
