@@ -12,6 +12,7 @@ public class Client {
   byte[] sendData;
 
   int port;
+  String hostname;
 
   /**
   *@param hostname
@@ -21,12 +22,13 @@ public class Client {
     serverSocket = new DatagramSocket();
     serverSocket.connect(InetAddress.getByName(hostname), port);
     this.port = port;
+    this.hostname = hostname;
     }
 
     public void sendMessage(String message){
       Message messageToSend = new Message(message.toString());
       //create packet to send
-      clientSendPacket = new DatagramPacket(messageToSend.getBytes(), messageToSend.getBytes().length, InetAddress.getByName(hostname), port);
+      packet = new DatagramPacket(messageToSend.getBytes(), messageToSend.getBytes().length, InetAddress.getByName(hostname), port);
       serverSocket.send(clientSendPacket);
     }
     public void close(){
