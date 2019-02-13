@@ -6,9 +6,9 @@ public class Message {
   int sequenceCounter;
 
   //sending - need to create packet to be sent
-  public Message(String message) {
+  public Message(String message, int count) {
     messageContents = message;
-    //sequenceCounter = counter;
+    sequenceCounter = count;
   }
 
   //receiving - recieved packet, need to "read" contents
