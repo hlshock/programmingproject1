@@ -6,7 +6,8 @@ import java.net.InetAddress;
 public class Client {
 
   DatagramSocket serverSocket;
-  DatagramPacket packet;
+  DatagramPacket sendPacket;
+  DatagramPacket receivePacket;
 
   byte[] receiveData;
   byte[] sendData;
@@ -24,6 +25,7 @@ public class Client {
       serverSocket.connect(InetAddress.getByName(hostname), port);
       this.port = port;
       this.hostname = hostname;
+      receiveData = new byte[256];
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -33,8 +35,14 @@ public class Client {
     try {
       Message messageToSend = new Message(message.toString());
       //create packet to send
-      packet = new DatagramPacket(messageToSend.getBytes(), messageToSend.getBytes().length, InetAddress.getByName(hostname), port);
-      serverSocket.send(packet);
+      sendPacket = new DatagramPacket(messageToSend.getBytes(), messageToSend.getBytes().length, InetAddress.getByName(hostname), port);
+      serverSocket.send(sendPacket);
+
+      //wait for response
+      receivePacket = new DatagramPacket(receiveData, receiveData.length);
+      serverSocket.receive(receivePacket);
+      String response = new String(receivePacket.getData());
+      System.out.println("From Server: " + response);
     } catch (Exception e) {
       e.printStackTrace();
     }
