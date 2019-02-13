@@ -10,7 +10,6 @@ public class Client {
   DatagramPacket receivePacket;
 
   byte[] receiveData;
-  byte[] sendData;
 
   int port;
   String hostname;
@@ -33,7 +32,7 @@ public class Client {
 
   public void sendMessage(String message){
     try {
-      Message messageToSend = new Message(message.toString());
+      Message messageToSend = new Message(message);
       //create packet to send
       sendPacket = new DatagramPacket(messageToSend.getBytes(), messageToSend.getBytes().length, InetAddress.getByName(hostname), port);
       serverSocket.send(sendPacket);
@@ -42,7 +41,7 @@ public class Client {
       receivePacket = new DatagramPacket(receiveData, receiveData.length);
       serverSocket.receive(receivePacket);
       String response = new String(receivePacket.getData());
-      System.out.println("From Server: " + response);
+      System.out.println("Response from Server: " + response);
     } catch (Exception e) {
       e.printStackTrace();
     }

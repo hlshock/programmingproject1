@@ -8,11 +8,12 @@ public class Message {
   //sending - need to create packet to be sent
   public Message(String message) {
     messageContents = message;
+    //sequenceCounter = counter;
   }
 
   //receiving - recieved packet, need to "read" contents
   public Message(byte[] messageBytes) {
-
+    messageContents = new String(messageBytes);
   }
 
   public int getSequenceCounter() {

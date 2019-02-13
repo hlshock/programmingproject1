@@ -38,10 +38,10 @@ public class Server {
         // receive data
         serverSocket.receive(receivePacket);
         System.out.println("Message recieved...");
-        String message = new String(receivePacket.getData());
-        System.out.println("Message contents: " + message);
+        Message receivedMessage = new Message(receivePacket.getData());
+        System.out.println("Message contents: " + receivedMessage.getMessageContents());
         //check for "end" request - do we respond if we get "end"" request?
-        if(message.equals("end")) {
+        if(receivedMessage.getMessageContents().equals("end")) {
           break;
         }
         //sending response - unsure about this part
