@@ -37,9 +37,11 @@ public class Server {
         receivePacket = new DatagramPacket(receiveData, receiveData.length);
         // receive data
         serverSocket.receive(receivePacket);
+        System.out.println("Message recieved...");
         String message = new String(receivePacket.getData());
+        System.out.println("Message contents: " + message);
         //check for "end" request - do we respond if we get "end"" request?
-        if(message == "end") {
+        if(message.equals("end")) {
           break;
         }
         //sending response - unsure about this part
