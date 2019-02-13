@@ -11,19 +11,23 @@ public class Client {
   byte[] receiveData;
   byte[] sendData;
 
+  int port;
+
   /**
   *@param hostname
   *@param port
   */
   public Client(String hostname, int port ){
     serverSocket = new DatagramSocket();
-    serverSocket.connect(hostname, port);
-
+    serverSocket.connect(InetAddress.getByName(hostname), port);
+    this.port = port;
     }
 
     public void sendMessage(String message){
       Message messageToSend = new Message(message.toString());
-      serverSocket.send(messageToSend);
+      //create packet to send
+      clientSendPacket = new DatagramPacket(messageToSend.getBytes(), messageToSend.getBytes().length, InetAddress.getByName(hostname), port);
+      serverSocket.send(clientSendPacket);
     }
     public void close(){
       try{
