@@ -1,3 +1,7 @@
+/**
+ * After running the server in one terminal window, in a second terminal window
+ * run this test program
+ */
 public class ClientTesting {
   public static void main(String[] args) {
     Client client = new Client("localhost", 4445);

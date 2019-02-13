@@ -1,3 +1,7 @@
+/**
+ * In terminal window, run this program, which starts the server running,
+ * then see ClientTesting class 
+ */
 public class ServerTesting {
 
   public static void main(String[] args) {
