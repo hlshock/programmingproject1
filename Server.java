@@ -45,7 +45,7 @@ public class Server {
         //sending response - unsure about this part
         InetAddress address = receivePacket.getAddress();
         int port = receivePacket.getPort();
-        
+
         String reply = "Reply";
         sendData = reply.getBytes();
         sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
