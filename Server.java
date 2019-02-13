@@ -12,6 +12,8 @@ public class Server {
   byte[] receiveData;
   byte[] sendData;
 
+  int serverCounter;
+
   /**
   * Sets up the server so it can receive messages from a specified port
   * @param portNum
@@ -21,6 +23,7 @@ public class Server {
       serverSocket = new DatagramSocket(portNum);
       receiveData = new byte[255];
       sendData = new byte[255];
+      serverCounter = 0;
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -35,11 +38,14 @@ public class Server {
       try {
         //initiliaze DatagramPacket to recieve data from the Client
         receivePacket = new DatagramPacket(receiveData, receiveData.length);
-        // receive data
+        // receive message from Client
         serverSocket.receive(receivePacket);
         System.out.println("Message recieved...");
         Message receivedMessage = new Message(receivePacket.getData());
-        System.out.println("Message contents: " + receivedMessage.getMessageContents());
+        System.out.println("contents: " + receivedMessage.getMessageContents());
+        //server checks message's counter?
+        //then increments counter (from checkpoint #3)
+        serverCounter++;
         //check for "end" request - do we respond if we get "end"" request?
         if(receivedMessage.getMessageContents().equals("end")) {
           break;

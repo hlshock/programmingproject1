@@ -53,6 +53,7 @@ public class Client {
       while(contSending == true && counter < 3) {
         //send packet
         serverSocket.send(sendPacket);
+        messageCounter++;
         //wait for response
         try {
           serverSocket.receive(receivePacket);
@@ -73,7 +74,7 @@ public class Client {
     {
       System.out.println("Exception: " + e);
     }
-    messageCounter++;
+
   }
 
   public void close(){
