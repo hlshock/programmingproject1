@@ -16,7 +16,7 @@ public class Message {
   }
 
   public byte[] getBytes() {
-    
+
   }
 
 
