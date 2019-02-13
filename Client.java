@@ -16,20 +16,23 @@ public class Client {
   *@param port
   */
   public Client(String hostname, int port ){
-    try{
     serverSocket = new DatagramSocket();
-  }catch (Exception e) {
-	    System.err.println("Exception:  " + e);
-	    e.printStackTrace();
-	}
+    serverSocket.connect(hostname, port);
+
     }
 
     public void sendMessage(String message){
-      Message message = new Message(message);
-
+      Message messageToSend = new Message(message.toString());
+      serverSocket.send(messageToSend);
     }
     public void close(){
+      try{
+        serverSocket.close();
+      }catch (Exception e) {
+        e.printStackTrace();
+      }
 
+      return true;
     }
     private void run(){
 
