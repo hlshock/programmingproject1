@@ -19,31 +19,38 @@ public class Client {
   *@param port
   */
   public Client(String hostname, int port ){
-    serverSocket = new DatagramSocket();
-    serverSocket.connect(InetAddress.getByName(hostname), port);
-    this.port = port;
-    this.hostname = hostname;
+    try {
+      serverSocket = new DatagramSocket();
+      serverSocket.connect(InetAddress.getByName(hostname), port);
+      this.port = port;
+      this.hostname = hostname;
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+  }
 
-    public void sendMessage(String message){
+  public void sendMessage(String message){
+    try {
       Message messageToSend = new Message(message.toString());
       //create packet to send
       packet = new DatagramPacket(messageToSend.getBytes(), messageToSend.getBytes().length, InetAddress.getByName(hostname), port);
-      serverSocket.send(clientSendPacket);
+      serverSocket.send(packet);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-    public void close(){
-      try{
-        serverSocket.close();
-      }catch (Exception e) {
-        e.printStackTrace();
-      }
 
-      return true;
+  }
+  public void close(){
+    try{
+      serverSocket.close();
+    }catch (Exception e) {
+      e.printStackTrace();
     }
-    private void run(){
+  }
+  private void run(){
 
-    }
-    public static void main(String[] args) {
+  }
+  public static void main(String[] args) {
 
-    }
+  }
 }

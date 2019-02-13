@@ -35,7 +35,7 @@ public class Message {
    * @return the byte array representation of this Message object
    */
   public byte[] getBytes() {
-    byte[] contents = messageContents.getBytes();
+    return messageContents.getBytes();
   }
 
 
