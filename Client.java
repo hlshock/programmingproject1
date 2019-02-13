@@ -45,7 +45,7 @@ public class Client {
       Message messageToSend = new Message(message, messageCounter);
       boolean contSending = true;
       int counter = 0;
-      //create packet to send
+      //create packet to send message
       sendPacket = new DatagramPacket(messageToSend.getBytes(), messageToSend.getBytes().length, InetAddress.getByName(hostname), port);
       //create packet to receive response
       receivePacket = new DatagramPacket(receiveData, receiveData.length);
