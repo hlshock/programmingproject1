@@ -17,6 +17,8 @@ public class Client {
   String hostname;
   int messageCounter;
 
+  boolean testing = true;
+
   /**
   *@param hostname
   *@param port
@@ -30,16 +32,22 @@ public class Client {
       serverSocket.connect(InetAddress.getByName(hostname), port);
       this.port = port;
       this.hostname = hostname;
-      receiveData = new byte[256];
+
       messageCounter = 0;
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
-  public void sendMessage(String message)
+  public boolean sendMessage(String message)
   {
-    System.out.println("Attempting to send: " + message);
+    boolean result = false;
+    receiveData = new byte[256];
+    if(testing)
+    {
+      System.out.println("Attempting to send Message #" + messageCounter);
+      System.out.println("Contents: " + message);
+    }
     try {
       //create message to send
       Message messageToSend = new Message(message, messageCounter);
@@ -57,32 +65,51 @@ public class Client {
         //wait for response
         try {
           serverSocket.receive(receivePacket);
-          System.out.println("Message #" + messageCounter +  " successfully sent");
+          Message responseMessage = new Message(receivePacket.getData());
+          String messageString = responseMessage.getMessageContents().trim();
+          String trimmedMessage = message.trim();
+          if(testing)
+          {
+            //System.out.println("Response received from server. ");
+            //System.out.println("messageString: " + messageString + " length: " + messageString.length());
+            //System.out.println("message: " + message + " length: " + trimmedMessage.length());
+
+            //test if response is same as message
+            boolean match = messageString.equals(trimmedMessage);
+            System.out.println("match: " + match);
+            if(match)
+            {
+              result = true;
+            }
+          }
           contSending = false;
         }
         //if response doesn't come within 5 seconds, send message again
         catch (SocketTimeoutException e) {
-          System.out.println("Response not received within timeout, sending again...");
+          if(testing)
+          {
+            System.out.println("Response not received within timeout, sending again...");
+          }
         }
         counter++;
       }
-      //get contents in a string
-      String response = new String(receivePacket.getData());
-      System.out.println("Response from Server: " + response);
     }
     catch (Exception e)
     {
       System.out.println("Exception: " + e);
     }
-
+    return result;
   }
 
-  public void close(){
+  public boolean close(){
+    boolean result = false;
     try{
       serverSocket.close();
+      result = true;
     }catch (Exception e) {
       e.printStackTrace();
     }
+    return result;
   }
   private void run(){
 

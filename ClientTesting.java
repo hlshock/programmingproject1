@@ -8,15 +8,32 @@ public class ClientTesting {
     System.out.println("CLIENT:");
 
     System.out.println("---------- Checkpoint 1: Basic Communication -----------------");
-    System.out.println("Sending Message 1...");
-    System.out.println("contents: " + "apple");
-    client.sendMessage("apple");
-    System.out.println("Sending Message 2...");
-    System.out.println("contents: " + "banana");
-    client.sendMessage("banana");
-    System.out.println("Sending Message 3...");
-    System.out.println("contents: " + "orange");
-    client.sendMessage("orange");
+    if(client.sendMessage("pineapple") == true)
+    {
+      System.out.println("Message 0: " + "SUCCESS");
+    }
+    else
+    {
+      System.out.println("Message 0: " + "FAILURE");
+    }
+    if(client.sendMessage("banana") == true)
+    {
+      System.out.println("Message 1: " + "SUCCESS");
+    }
+    else
+    {
+      System.out.println("Message 1: " + "FAILURE");
+    }
+    if(client.sendMessage("orange") == true)
+    {
+      System.out.println("Message 3: " + "SUCCESS");
+    }
+    else
+    {
+      System.out.println("Message 3: " + "FAILURE");
+    }
+
+
 
     System.out.println("");
     System.out.println("--------- Checkpoint 2: Reliable Communication Part 1 ------------");

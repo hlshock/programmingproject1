@@ -14,6 +14,8 @@ public class Server {
 
   int serverCounter;
 
+  boolean testing = true;
+
   /**
   * Sets up the server so it can receive messages from a specified port
   * @param portNum
@@ -21,8 +23,7 @@ public class Server {
   public Server(int portNum) {
     try {
       serverSocket = new DatagramSocket(portNum);
-      receiveData = new byte[255];
-      sendData = new byte[255];
+
       serverCounter = 0;
     } catch (Exception e) {
       e.printStackTrace();
@@ -32,32 +33,41 @@ public class Server {
   * Starts the server listening on its port
   */
   public void run() {
-
+    //continues looping until message containing "end" is received
     while(true) {
-      System.out.println("Server running");
+      receiveData = new byte[255];
+      sendData = new byte[255];
+
+      if(testing)
+      {
+        System.out.println("Server running...");
+      }
       try {
         //initiliaze DatagramPacket to recieve data from the Client
         receivePacket = new DatagramPacket(receiveData, receiveData.length);
         // receive message from Client
         serverSocket.receive(receivePacket);
-        System.out.println("Message recieved...");
+        //using Message class, create Message object from received bytes
         Message receivedMessage = new Message(receivePacket.getData());
-        System.out.println("contents: " + receivedMessage.getMessageContents());
+        if(testing)
+        {
+          System.out.println("Message #" + receivedMessage.getSequenceCounter() + " recieved");
+          System.out.println("contents: " + receivedMessage.getMessageContents());
+        }
         //server checks message's counter?
         //then increments counter (from checkpoint #3)
         serverCounter++;
-        //check for "end" request - do we respond if we get "end"" request?
-        if(receivedMessage.getMessageContents().equals("end")) {
-          break;
-        }
         //sending response - unsure about this part
         InetAddress address = receivePacket.getAddress();
         int port = receivePacket.getPort();
-
-        String reply = "Reply";
-        sendData = reply.getBytes();
+        //reply with same sentence
+        sendData = receivedMessage.getMessageContents().trim().getBytes();
         sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
         serverSocket.send(sendPacket);
+        //check for "end" request
+        if(receivedMessage.getMessageContents().equals("end")) {
+          break;
+        }
       } catch (Exception e) {
         e.printStackTrace();
       }
