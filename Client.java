@@ -5,9 +5,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 public class Client {
-
-
-  DatagramSocket serverSocket;
+  DatagramSocket clientSocket;
   DatagramPacket sendPacket;
   DatagramPacket receivePacket;
 
@@ -26,10 +24,10 @@ public class Client {
   public Client(String hostname, int port ){
     try {
       //create socket
-      serverSocket = new DatagramSocket();
+      clientSocket = new DatagramSocket();
       //set timeout to 5 seconds
-      serverSocket.setSoTimeout(5000);
-      serverSocket.connect(InetAddress.getByName(hostname), port);
+      clientSocket.setSoTimeout(5000);
+      clientSocket.connect(InetAddress.getByName(hostname), port);
       this.port = port;
       this.hostname = hostname;
 
@@ -60,13 +58,13 @@ public class Client {
       //keep sending (up to 3 times?) until response is received
       while(contSending == true && counter < 3) {
         //send packet
-        serverSocket.send(sendPacket);
+        clientSocket.send(sendPacket);
         messageCounter++;
         //if message is not "end", wait for response
         if(message != "end")
         {
           try {
-            serverSocket.receive(receivePacket);
+            clientSocket.receive(receivePacket);
             Message responseMessage = new Message(receivePacket.getData());
             String messageString = responseMessage.getMessageContents().trim();
             String trimmedMessage = message.trim();
@@ -111,7 +109,7 @@ public class Client {
   public boolean close(){
     boolean result = false;
     try{
-      serverSocket.close();
+      clientSocket.close();
       result = true;
     }catch (Exception e) {
       e.printStackTrace();

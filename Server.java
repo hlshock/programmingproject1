@@ -23,7 +23,6 @@ public class Server {
   public Server(int portNum) {
     try {
       serverSocket = new DatagramSocket(portNum);
-
       serverCounter = 0;
     } catch (Exception e) {
       e.printStackTrace();
@@ -39,7 +38,6 @@ public class Server {
     {
       System.out.println("Server running...");
     }
-
     while(continueReceiving) {
       receiveData = new byte[256];
       sendData = new byte[256];
@@ -62,9 +60,17 @@ public class Server {
           System.out.println("End message recevied...");
           continueReceiving = false;
         }
-        //server checks message's counter?
-        //then increments counter (from checkpoint #3)
-        serverCounter++;
+        //server checks message's counter
+        if(testing)
+        {
+          System.out.println("Message counter = " + receivedMessage.getSequenceCounter());
+          System.out.println("Server counter = " + serverCounter);
+        }
+        if(receivedMessage.getSequenceCounter() == serverCounter)
+        {
+          // increments counter if this is a new message (not received by server before)
+          serverCounter++;
+        }
         //sending response - unsure about this part
         InetAddress address = receivePacket.getAddress();
         int port = receivePacket.getPort();
