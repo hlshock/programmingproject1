@@ -34,14 +34,15 @@ public class Server {
   */
   public void run() {
     //continues looping until message containing "end" is received
-    while(true) {
-      receiveData = new byte[255];
-      sendData = new byte[255];
+    boolean continueReceiving = true;
+    if(testing)
+    {
+      System.out.println("Server running...");
+    }
 
-      if(testing)
-      {
-        System.out.println("Server running...");
-      }
+    while(continueReceiving) {
+      receiveData = new byte[256];
+      sendData = new byte[256];
       try {
         //initiliaze DatagramPacket to recieve data from the Client
         receivePacket = new DatagramPacket(receiveData, receiveData.length);
@@ -53,6 +54,13 @@ public class Server {
         {
           System.out.println("Message #" + receivedMessage.getSequenceCounter() + " recieved");
           System.out.println("contents: " + receivedMessage.getMessageContents());
+          System.out.println("length: " + receivedMessage.getMessageContents().length());
+
+        }
+        //check for "end" request - don't need to send response
+        if(receivedMessage.getMessageContents().equals("end")) {
+          System.out.println("End message recevied...");
+          continueReceiving = false;
         }
         //server checks message's counter?
         //then increments counter (from checkpoint #3)
@@ -64,10 +72,7 @@ public class Server {
         sendData = receivedMessage.getMessageContents().trim().getBytes();
         sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
         serverSocket.send(sendPacket);
-        //check for "end" request
-        if(receivedMessage.getMessageContents().equals("end")) {
-          break;
-        }
+
       } catch (Exception e) {
         e.printStackTrace();
       }

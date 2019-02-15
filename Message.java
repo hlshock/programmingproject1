@@ -1,5 +1,8 @@
+import java.util.*;
 /**
- * Represents a message of up to 255 bytes in size alomng with other information
+ * Represents a message:
+ * first 255 bytes = string contents
+ * next 1 byte = message counter
  */
 public class Message {
   String messageContents;
@@ -13,7 +16,11 @@ public class Message {
 
   //receiving - recieved packet, need to "read" contents
   public Message(byte[] messageBytes) {
-    messageContents = new String(messageBytes);
+    //get message content bytes
+    byte[] stringBytes = Arrays.copyOfRange(messageBytes, 0, 255);
+    //convert to String and trim whitespace
+    messageContents = new String(stringBytes).trim();
+    sequenceCounter = messageBytes[255];
   }
 
   public int getSequenceCounter() {
@@ -36,7 +43,25 @@ public class Message {
    * @return the byte array representation of this Message object
    */
   public byte[] getBytes() {
-    return messageContents.getBytes();
+    //convert counter to byte
+    byte counterByte = (byte) sequenceCounter;
+    //create new array to represent message
+    byte[] stringBytes = messageContents.getBytes();
+    byte[] mBytes = new byte[256];
+    // loop through array
+    for(int i = 0; i < 256; i++)
+    {
+      if( i < stringBytes.length)
+      {
+        mBytes[i] = stringBytes[i];
+      }
+      else
+      {
+        mBytes[i] = 0;
+      }
+    }
+    mBytes[255] = counterByte;
+    return mBytes;
   }
 
 
