@@ -17,20 +17,6 @@ public class UnreliableNetwork {
 
   boolean testing = true;
 
-<<<<<<< HEAD
-  public UnreliableNetwork(int cNum, int sNum) {
-    if(testing) {
-      System.out.println("Unreliable Network running...");
-    }
-    clientPortNum = cNum;
-    serverPortNum = sNum;
-    //what port number do we use?
-    try {
-      networkSocket = new DatagramSocket(clientPortNum);
-    } catch (Exception e)
-    {
-      e.printStackTrace();
-=======
   public UnreliableNetwork(int serverPortNum) {
     if(testing) {
       System.out.println("Unreliable Network running...");
@@ -42,7 +28,6 @@ public class UnreliableNetwork {
       // networkSocket.connect(InetAddress.getByName("localhost"),serverPortNum);
     } catch (Exception e){
       System.out.println("Exception: " + e);
->>>>>>> 523730fab162abe1b01acc864b425aec59db66f6
     }
   }
 
@@ -60,14 +45,8 @@ public class UnreliableNetwork {
       try {
         //receive message from Client:
         receivePacket = new DatagramPacket(receiveData, receiveData.length);
-<<<<<<< HEAD
-        //connect to port number of client socket
-        networkSocket.connect(InetAddress.getByName("localhost"), clientPortNum);
-        networkSocket.receive(receivePacket);
-=======
         networkSocket.receive(receivePacket);
         clientPortNum = receivePacket.getPort();
->>>>>>> 523730fab162abe1b01acc864b425aec59db66f6
         if(testing) {
           System.out.println("Message received...");
         }
@@ -78,20 +57,8 @@ public class UnreliableNetwork {
           }
           sendData = receivePacket.getData();
           //not sure what address to use
-<<<<<<< HEAD
-          networkSocket.connect(InetAddress.getByName("localhost"), serverPortNum);
-          sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("localhost"), serverPortNum);
-          networkSocket.send(sendPacket);
-        }
-        else
-        {
-          if(testing) {
-            System.out.println("Packet dropped...");
-          }
-=======
           sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("localhost"), clientPortNum);
           networkSocket.send(sendPacket);
->>>>>>> 523730fab162abe1b01acc864b425aec59db66f6
         }
 
       } catch (Exception e) {
