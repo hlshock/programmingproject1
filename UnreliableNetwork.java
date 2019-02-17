@@ -51,7 +51,7 @@ public class UnreliableNetwork {
           System.out.println("Message received...");
         }
         //send message half the time
-        if(rand.nextInt(11) < 6) {
+        if(rand.nextInt(10) < 5) {
           if(testing) {
             System.out.println("Forwarding Packet...");
           }
