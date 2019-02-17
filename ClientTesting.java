@@ -37,22 +37,14 @@ public class ClientTesting {
       System.out.println("Message 2: " + "FAILURE");
     }
 
-    if(client.sendMessage("end") == true)
-    {
-      System.out.println("Message 3: " + "SUCCESS");
-    }
-    else
-    {
-      System.out.println("Message 3: " + "FAILURE");
-    }
     client.close();
     //TEST 2
     System.out.println("");
     System.out.println("--------- Checkpoint 2: Reliable Communication Part 1 ------------");
     //client connects to socket of network
-    Client client2 = new Client("localhost", 4446);
+    Client client2 = new Client("localhost", 4444);
 
-    if(client.sendMessage("blueberry") == true)
+    if(client2.sendMessage("blueberry") == true)
     {
       System.out.println("Message 0: " + "SUCCESS");
     }
@@ -61,7 +53,7 @@ public class ClientTesting {
       System.out.println("Message 0: " + "FAILURE");
     }
 
-    if(client.sendMessage("strawberry") == true)
+    if(client2.sendMessage("strawberry") == true)
     {
       System.out.println("Message 1: " + "SUCCESS");
     }
@@ -70,7 +62,7 @@ public class ClientTesting {
       System.out.println("Message 1: " + "FAILURE");
     }
 
-    if(client.sendMessage("raspberry") == true)
+    if(client2.sendMessage("raspberry") == true)
     {
       System.out.println("Message 2: " + "SUCCESS");
     }
