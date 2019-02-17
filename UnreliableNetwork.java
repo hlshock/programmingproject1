@@ -4,8 +4,7 @@ import java.util.Random;
 
 public class UnreliableNetwork {
 
-  DatagramSocket clientSocket;
-  DatagramSocket serverSocket;
+  DatagramSocket networkSocket;
 
   DatagramPacket receivePacket;
   DatagramPacket sendPacket;
@@ -18,21 +17,20 @@ public class UnreliableNetwork {
 
   boolean testing = true;
 
-  public UnreliableNetwork(int clientPortNum, int serverPortNum) {
+  public UnreliableNetwork(int serverPortNum) {
     if(testing) {
       System.out.println("Unreliable Network running...");
     }
-    this.clientPortNum = clientPortNum;
     this.serverPortNum = serverPortNum;
     //what port number do we use?
-    try {
-      clientSocket = new DatagramSocket(clientPortNum);
-      serverSocket = new DatagramSocket(serverPortNum);
-    } catch (Exception e)
-    {
-      e.printStackTrace();
+    try{
+      networkSocket = new DatagramSocket(4444);
+      // networkSocket.connect(InetAddress.getByName("localhost"),serverPortNum);
+    } catch (Exception e){
+      System.out.println("Exception: " + e);
     }
   }
+
   public void run() {
     Random rand = new Random();
     boolean continueReceiving = true;
@@ -46,7 +44,8 @@ public class UnreliableNetwork {
       sendData = new byte[256];
       try {
         receivePacket = new DatagramPacket(receiveData, receiveData.length);
-        clientSocket.receive(receivePacket);
+        networkSocket.receive(receivePacket);
+        clientPortNum = receivePacket.getPort();
         if(testing) {
           System.out.println("Message received...");
         }
@@ -57,8 +56,8 @@ public class UnreliableNetwork {
           }
           sendData = receivePacket.getData();
           //not sure what address to use
-          sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("localhost"), serverPortNum);
-          serverSocket.send(sendPacket);
+          sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("localhost"), clientPortNum);
+          networkSocket.send(sendPacket);
         }
 
       } catch (Exception e) {
@@ -68,8 +67,7 @@ public class UnreliableNetwork {
   }
 
   public void close() {
-    clientSocket.close();
-    serverSocket.close();
+    networkSocket.close();
   }
 
 }
