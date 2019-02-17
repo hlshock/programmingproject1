@@ -50,13 +50,12 @@ public class Client {
       //create message to send
       Message messageToSend = new Message(message, messageCounter);
       boolean contSending = true;
-      int counter = 0;
       //create packet to send message
       sendPacket = new DatagramPacket(messageToSend.getBytes(), messageToSend.getBytes().length, InetAddress.getByName(hostname), port);
       //create packet to receive response
       receivePacket = new DatagramPacket(receiveData, receiveData.length);
-      //keep sending (up to 3 times?) until response is received
-      while(contSending == true && counter < 3) {
+      //keep sending until response is received
+      while(contSending == true) {
         //send packet
         clientSocket.send(sendPacket);
         messageCounter++;
@@ -90,7 +89,6 @@ public class Client {
               System.out.println("Response not received within timeout, sending again...");
             }
           }
-          counter++;
         }
         else
         {
