@@ -17,15 +17,15 @@ public class UnreliableNetwork {
 
   boolean testing = true;
 
-  public UnreliableNetwork(int serverPortNum) {
-    if(testing) {
-      System.out.println("Unreliable Network running...");
-    }
+  int dropRate;
+
+  public UnreliableNetwork(int serverPortNum, int drop) {
+    System.out.println("Unreliable Network running...");
     this.serverPortNum = serverPortNum;
+    dropRate = drop;
     //what port number do we use?
     try{
       networkSocket = new DatagramSocket(4444);
-      // networkSocket.connect(InetAddress.getByName("localhost"),serverPortNum);
     } catch (Exception e){
       System.out.println("Exception: " + e);
     }
@@ -46,29 +46,41 @@ public class UnreliableNetwork {
         //receive message from Client:
         receivePacket = new DatagramPacket(receiveData, receiveData.length);
         networkSocket.receive(receivePacket);
+        System.out.println("Message received...");
+        Message reMessage = new Message(receivePacket.getData());
+        System.out.println("Contents: " + reMessage.getMessageContents());
         clientPortNum = receivePacket.getPort();
-        if(testing) {
-          System.out.println("Message received...");
-        }
-        //send message half the time
-        if(rand.nextInt(10) < 5) {
-          if(testing) {
-            System.out.println("Forwarding Packet...");
-          }
+        System.out.println("Port of socket received from: " + clientPortNum);
+        //drop packet depending on inputted drop rate
+        //if(rand.nextInt(100) >= dropRate ) {
+          System.out.println("Forwarding Packet...");
+          //forward message - WORKS
           sendData = receivePacket.getData();
-          //not sure what address to use
-          sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("localhost"), clientPortNum);
+          sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("localhost"), serverPortNum);
           networkSocket.send(sendPacket);
-        }
+        //}
+        //receive packet (containing response) from serverSocket - WORKS
+        receivePacket = new DatagramPacket(receiveData, receiveData.length);
+        networkSocket.receive(receivePacket);
+        System.out.println("Response received...");
+        Message reaMessage = new Message(receivePacket.getData());
+        System.out.println("Contents: " + reaMessage.getMessageContents());
+        serverPortNum = receivePacket.getPort();
+        System.out.println("Port of socket received from: " + serverPortNum);
 
-      } catch (Exception e) {
+        //forward response to server
+        sendData = receivePacket.getData();
+        sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("localhost"), clientPortNum);
+        networkSocket.send(sendPacket);
+      }
+      catch (Exception e) {
         e.printStackTrace();
       }
     }
   }
 
-  public void close() {
-    networkSocket.close();
-  }
+    public void close() {
+      networkSocket.close();
+    }
 
-}
+  }

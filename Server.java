@@ -75,7 +75,7 @@ public class Server {
         InetAddress address = receivePacket.getAddress();
         int port = receivePacket.getPort();
         //reply with same sentence
-        sendData = receivedMessage.getMessageContents().trim().getBytes();
+        sendData = receivedMessage.getMessageContents().trim().toUpperCase().getBytes();
         sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
         serverSocket.send(sendPacket);
 

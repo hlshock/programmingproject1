@@ -26,7 +26,7 @@ public class Client {
       //create socket
       clientSocket = new DatagramSocket();
       //set timeout to 5 seconds
-      clientSocket.setSoTimeout(5000);
+      //clientSocket.setSoTimeout(5000);
       clientSocket.connect(InetAddress.getByName(hostname), port);
       this.port = port;
       this.hostname = hostname;
@@ -63,23 +63,20 @@ public class Client {
         if(message != "end")
         {
           try {
+            //receive response
             clientSocket.receive(receivePacket);
             Message responseMessage = new Message(receivePacket.getData());
             String messageString = responseMessage.getMessageContents().trim();
-            String trimmedMessage = message.trim();
-            if(testing)
-            {
-              //System.out.println("Response received from server. ");
-              //System.out.println("messageString: " + messageString + " length: " + messageString.length());
-              //System.out.println("message: " + message + " length: " + trimmedMessage.length());
+            String testMessage = message.trim().toUpperCase();
+            System.out.println("messageString: " + messageString + " length: " + messageString.length());
+            System.out.println("message: " + testMessage + " length: " + testMessage.length());
 
-              //test if response is same as message
-              boolean match = messageString.equals(trimmedMessage);
-              System.out.println("match: " + match);
-              if(match)
-              {
-                result = true;
-              }
+            //test if response is same as message
+            boolean match = messageString.equals(testMessage);
+            System.out.println("match: " + match);
+            if(match)
+            {
+              result = true;
             }
             contSending = false;
           }
@@ -113,11 +110,5 @@ public class Client {
       e.printStackTrace();
     }
     return result;
-  }
-  private void run(){
-
-  }
-  public static void main(String[] args) {
-
   }
 }
