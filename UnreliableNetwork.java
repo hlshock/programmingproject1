@@ -46,14 +46,14 @@ public class UnreliableNetwork {
         //receive message from Client:
         receivePacket = new DatagramPacket(receiveData, receiveData.length);
         networkSocket.receive(receivePacket);
-        System.out.println("Message received...");
+        System.out.println("\nMessage received...");
         Message reMessage = new Message(receivePacket.getData());
-        System.out.println("Contents: " + reMessage.getMessageContents());
+        System.out.println("Message Contents: " + reMessage.getMessageContents());
         clientPortNum = receivePacket.getPort();
-        System.out.println("Port of socket received from: " + clientPortNum);
+        System.out.println("Received from Port #" + clientPortNum);
         //drop packet depending on inputted drop rate
         if(rand.nextInt(100) >= dropRate ) {
-          System.out.println("Forwarding Packet...");
+          System.out.println("Forwarding Message...");
           //forward message - WORKS
           sendData = receivePacket.getData();
           sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("localhost"), serverPortNum);
@@ -61,15 +61,18 @@ public class UnreliableNetwork {
           //receive packet (containing response) from serverSocket - WORKS
           receivePacket = new DatagramPacket(receiveData, receiveData.length);
           networkSocket.receive(receivePacket);
-          System.out.println("Response received...");
+          System.out.println("\nResponse received...");
           Message reaMessage = new Message(receivePacket.getData());
           System.out.println("Contents: " + reaMessage.getMessageContents());
           serverPortNum = receivePacket.getPort();
-          System.out.println("Port of socket received from: " + serverPortNum);
+          System.out.println("Received from Port #" + serverPortNum);
           //forward response to server
           sendData = receivePacket.getData();
           sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("localhost"), clientPortNum);
           networkSocket.send(sendPacket);
+        }
+        else {
+          System.out.println("Dropped Message...");
         }
       }
       catch (Exception e) {

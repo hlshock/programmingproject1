@@ -50,10 +50,10 @@ public class Server {
         Message receivedMessage = new Message(receivePacket.getData());
         if(testing)
         {
-          System.out.println("Message recieved");
-          System.out.println("contents: " + receivedMessage.getMessageContents());
+          System.out.println("\nMessage recieved...");
+          System.out.println("Message contents: " + receivedMessage.getMessageContents());
           System.out.println("length: " + receivedMessage.getMessageContents().length());
-          System.out.println("count: " + receivedMessage.getSequenceCounter());
+          System.out.println("Message counter: " + receivedMessage.getSequenceCounter() + "/n");
 
         }
         //check for "end" request - don't need to send response
@@ -75,6 +75,7 @@ public class Server {
         sendData = receivedMessage.getMessageContents().trim().toUpperCase().getBytes();
         sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
         serverSocket.send(sendPacket);
+        System.out.println("\nResponse sent...");
 
       } catch (Exception e) {
         e.printStackTrace();

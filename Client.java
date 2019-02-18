@@ -48,7 +48,6 @@ public class Client {
     {
       System.out.println("Attempting to send Message #" + messageCounter);
       System.out.println("Contents: " + message);
-      System.out.println("Counter: " + messageCounter);
     }
     try {
       //create message to send
@@ -62,23 +61,23 @@ public class Client {
       while(contSending == true) {
         //send packet
         clientSocket.send(sendPacket);
-
         //if message is not "end", wait for response
         if(message != "end")
         {
           try {
             //receive response
             clientSocket.receive(receivePacket);
+            System.out.println("\nResponse received...");
             Message responseMessage = new Message(receivePacket.getData());
             String messageString = responseMessage.getMessageContents().trim();
-            String testMessage = message.trim().toUpperCase();
-            System.out.println("messageString: " + messageString + " length: " + messageString.length());
-            System.out.println("message: " + testMessage + " length: " + testMessage.length());
+            String testMessage = message.trim();
+            System.out.println("Response contents: " + messageString);
+            System.out.println("Original Message contents: " + testMessage);
 
             //test if response is same as message
-            boolean match = messageString.equals(testMessage);
-            System.out.println("match: " + match);
-            if(match)messageCounter++;
+            boolean match = messageString.equals(testMessage.toUpperCase());
+            System.out.println("Message/Response Match = " + match);
+            if(match)
             {
               result = true;
               messageCounter++;
