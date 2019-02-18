@@ -26,7 +26,7 @@ public class Client {
       //create socket
       clientSocket = new DatagramSocket();
       //set timeout to 5 seconds
-      //clientSocket.setSoTimeout(5000);
+      clientSocket.setSoTimeout(5000);
       clientSocket.connect(InetAddress.getByName(hostname), port);
       this.port = port;
       this.hostname = hostname;

@@ -50,7 +50,7 @@ public class Server {
         Message receivedMessage = new Message(receivePacket.getData());
         if(testing)
         {
-          System.out.println("Message #" + receivedMessage.getSequenceCounter() + " recieved");
+          System.out.println("Message recieved");
           System.out.println("contents: " + receivedMessage.getMessageContents());
           System.out.println("length: " + receivedMessage.getMessageContents().length());
 
@@ -61,11 +61,7 @@ public class Server {
           continueReceiving = false;
         }
         //server checks message's counter
-        if(testing)
-        {
-          System.out.println("Message counter = " + receivedMessage.getSequenceCounter());
-          System.out.println("Server counter = " + serverCounter);
-        }
+
         if(receivedMessage.getSequenceCounter() == serverCounter)
         {
           // increments counter if this is a new message (not received by server before)

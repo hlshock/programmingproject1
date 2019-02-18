@@ -52,26 +52,25 @@ public class UnreliableNetwork {
         clientPortNum = receivePacket.getPort();
         System.out.println("Port of socket received from: " + clientPortNum);
         //drop packet depending on inputted drop rate
-        //if(rand.nextInt(100) >= dropRate ) {
+        if(rand.nextInt(100) >= dropRate ) {
           System.out.println("Forwarding Packet...");
           //forward message - WORKS
           sendData = receivePacket.getData();
           sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("localhost"), serverPortNum);
           networkSocket.send(sendPacket);
-        //}
-        //receive packet (containing response) from serverSocket - WORKS
-        receivePacket = new DatagramPacket(receiveData, receiveData.length);
-        networkSocket.receive(receivePacket);
-        System.out.println("Response received...");
-        Message reaMessage = new Message(receivePacket.getData());
-        System.out.println("Contents: " + reaMessage.getMessageContents());
-        serverPortNum = receivePacket.getPort();
-        System.out.println("Port of socket received from: " + serverPortNum);
-
-        //forward response to server
-        sendData = receivePacket.getData();
-        sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("localhost"), clientPortNum);
-        networkSocket.send(sendPacket);
+          //receive packet (containing response) from serverSocket - WORKS
+          receivePacket = new DatagramPacket(receiveData, receiveData.length);
+          networkSocket.receive(receivePacket);
+          System.out.println("Response received...");
+          Message reaMessage = new Message(receivePacket.getData());
+          System.out.println("Contents: " + reaMessage.getMessageContents());
+          serverPortNum = receivePacket.getPort();
+          System.out.println("Port of socket received from: " + serverPortNum);
+          //forward response to server
+          sendData = receivePacket.getData();
+          sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("localhost"), clientPortNum);
+          networkSocket.send(sendPacket);
+        }
       }
       catch (Exception e) {
         e.printStackTrace();
