@@ -40,7 +40,7 @@ public class Client {
   public boolean sendMessage(String message)
   {
     boolean result = false;
-    receiveData = new byte[256];
+    receiveData = new byte[260];
     if(testing)
     {
       System.out.println("Attempting to send Message #" + messageCounter);

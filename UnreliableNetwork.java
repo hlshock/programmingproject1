@@ -40,8 +40,8 @@ public class UnreliableNetwork {
     //continue looping until we get end message
     while(continueReceiving)
     {
-      receiveData = new byte[256];
-      sendData = new byte[256];
+      receiveData = new byte[260];
+      sendData = new byte[260];
       try {
         //receive message from Client:
         receivePacket = new DatagramPacket(receiveData, receiveData.length);

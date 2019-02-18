@@ -39,8 +39,8 @@ public class Server {
       System.out.println("Server running...");
     }
     while(continueReceiving) {
-      receiveData = new byte[256];
-      sendData = new byte[256];
+      receiveData = new byte[260];
+      sendData = new byte[260];
       try {
         //initiliaze DatagramPacket to recieve data from the Client
         receivePacket = new DatagramPacket(receiveData, receiveData.length);
@@ -53,6 +53,7 @@ public class Server {
           System.out.println("Message recieved");
           System.out.println("contents: " + receivedMessage.getMessageContents());
           System.out.println("length: " + receivedMessage.getMessageContents().length());
+          System.out.println("count: " + receivedMessage.getSequenceCounter());
 
         }
         //check for "end" request - don't need to send response
