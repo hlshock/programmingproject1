@@ -41,10 +41,14 @@ public class Client {
   {
     boolean result = false;
     receiveData = new byte[260];
+    if(message.length() > 255){
+      return sendLongMessage(message);
+    }
     if(testing)
     {
       System.out.println("Attempting to send Message #" + messageCounter);
       System.out.println("Contents: " + message);
+      System.out.println("Counter: " + messageCounter);
     }
     try {
       //create message to send
@@ -58,7 +62,7 @@ public class Client {
       while(contSending == true) {
         //send packet
         clientSocket.send(sendPacket);
-        messageCounter++;
+
         //if message is not "end", wait for response
         if(message != "end")
         {
@@ -74,9 +78,10 @@ public class Client {
             //test if response is same as message
             boolean match = messageString.equals(testMessage);
             System.out.println("match: " + match);
-            if(match)
+            if(match)messageCounter++;
             {
               result = true;
+              messageCounter++;
             }
             contSending = false;
           }
@@ -100,6 +105,14 @@ public class Client {
     }
     return result;
   }
+
+  private boolean sendLongMessage(String m){
+      for (int i = 0; i < m.length(); i+=255){
+        sendMessage(m.substring(i, i+255));
+      }
+      return true;
+  }
+
 
   public boolean close(){
     boolean result = false;
