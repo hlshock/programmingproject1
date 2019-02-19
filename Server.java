@@ -53,7 +53,7 @@ public class Server {
           System.out.println("\nMessage recieved...");
           System.out.println("Message contents: " + receivedMessage.getMessageContents());
           System.out.println("length: " + receivedMessage.getMessageContents().length());
-          System.out.println("Message counter: " + receivedMessage.getSequenceCounter() + "/n");
+          System.out.println("Message counter: " + receivedMessage.getSequenceCounter() + "\n");
 
         }
         //check for "end" request - don't need to send response
@@ -62,7 +62,6 @@ public class Server {
           continueReceiving = false;
         }
         //server checks message's counter
-
         if(receivedMessage.getSequenceCounter() == serverCounter)
         {
           // increments counter if this is a new message (not received by server before)

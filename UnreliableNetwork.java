@@ -49,10 +49,22 @@ public class UnreliableNetwork {
         System.out.println("\nMessage received...");
         Message reMessage = new Message(receivePacket.getData());
         System.out.println("Message Contents: " + reMessage.getMessageContents());
+
         clientPortNum = receivePacket.getPort();
         System.out.println("Received from Port #" + clientPortNum);
+        // if message is ending message, forward it (don't drop)
+        if(reMessage.getMessageContents().trim().equals("end")) {
+
+          //forard message and exit
+          System.out.println("End Message Received, forwarding...");
+          //forward message - WORKS
+          sendData = receivePacket.getData();
+          sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("localhost"), serverPortNum);
+          networkSocket.send(sendPacket);
+          continueReceiving = false;
+        }
         //drop packet depending on inputted drop rate
-        if(rand.nextInt(100) >= dropRate ) {
+        else if(rand.nextInt(100) >= dropRate ) {
           System.out.println("Forwarding Message...");
           //forward message - WORKS
           sendData = receivePacket.getData();
@@ -79,10 +91,6 @@ public class UnreliableNetwork {
         e.printStackTrace();
       }
     }
+    networkSocket.close();
   }
-
-    public void close() {
-      networkSocket.close();
-    }
-
-  }
+}

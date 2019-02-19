@@ -7,10 +7,10 @@ public class ClientTesting {
     Check1();
     System.out.println("");
     Check2();
-    System.out.println("");
-    Check3();
-    System.out.println("");
-    Check4();
+    //System.out.println("");
+    //Check3();
+    //System.out.println("");
+    //Check4();
   }
 
   public static void Check1() {
@@ -43,7 +43,17 @@ public class ClientTesting {
     {
       System.out.println("Message 2: " + "FAILURE");
     }
+
+    if(client.sendMessage("end") == true)
+    {
+      System.out.println("Message 3: " + "SUCCESS");
+    }
+    else
+    {
+      System.out.println("Message 3: " + "FAILURE");
+    }
     client.close();
+    System.out.println("CHECKPOINT 1 TEST DONE. ");
   }
 
   public static void Check2() {
@@ -77,7 +87,17 @@ public class ClientTesting {
     {
       System.out.println("Message 2: " + "FAILURE");
     }
+
+    if(client2.sendMessage("end") == true)
+    {
+      System.out.println("Message 2: " + "SUCCESS");
+    }
+    else
+    {
+      System.out.println("Message 2: " + "FAILURE");
+    }
     client2.close();
+    System.out.println("CHECKPOINT 2 TEST DONE. ");
   }
   public static void Check3() {
     System.out.println("--------- Checkpoint 3: Reliable Communication Part 2 ------------");
