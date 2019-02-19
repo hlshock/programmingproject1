@@ -30,7 +30,6 @@ public class Client {
       clientSocket.connect(InetAddress.getByName(hostname), port);
       this.port = port;
       this.hostname = hostname;
-
       messageCounter = 0;
     } catch (Exception e) {
       e.printStackTrace();
@@ -73,7 +72,6 @@ public class Client {
             String testMessage = message.trim();
             System.out.println("Response contents: " + messageString);
             System.out.println("Original Message contents: " + testMessage);
-
             //test if response is same as message
             boolean match = messageString.equals(testMessage.toUpperCase());
             System.out.println("Message/Response Match = " + match);
@@ -111,7 +109,6 @@ public class Client {
       }
       return true;
   }
-
 
   public boolean close(){
     boolean result = false;

@@ -53,8 +53,8 @@ public class Server {
           System.out.println("\nMessage recieved...");
           System.out.println("Message contents: " + receivedMessage.getMessageContents());
           System.out.println("length: " + receivedMessage.getMessageContents().length());
-          System.out.println("Message counter: " + receivedMessage.getSequenceCounter() + "\n");
-
+          System.out.println("Message counter: " + receivedMessage.getSequenceCounter());
+          System.out.println("Server counter: " + serverCounter + "\n");
         }
         //check for "end" request - don't need to send response
         if(receivedMessage.getMessageContents().equals("end")) {
@@ -65,6 +65,7 @@ public class Server {
         if(receivedMessage.getSequenceCounter() == serverCounter)
         {
           // increments counter if this is a new message (not received by server before)
+          System.out.println("Incremented server counter, counter = " + serverCounter);
           serverCounter++;
         }
         //sending response - unsure about this part
@@ -75,7 +76,6 @@ public class Server {
         sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
         serverSocket.send(sendPacket);
         System.out.println("\nResponse sent...");
-
       } catch (Exception e) {
         e.printStackTrace();
       }

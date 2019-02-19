@@ -7,8 +7,8 @@ public class ClientTesting {
     Check1();
     System.out.println("");
     Check2();
-    //System.out.println("");
-    //Check3();
+    System.out.println("");
+    Check3();
     //System.out.println("");
     //Check4();
   }
@@ -101,6 +101,46 @@ public class ClientTesting {
   }
   public static void Check3() {
     System.out.println("--------- Checkpoint 3: Reliable Communication Part 2 ------------");
+    //client connects to socket of network
+    Client client3 = new Client("localhost", 4444);
+
+    if(client3.sendMessage("mango") == true)
+    {
+      System.out.println("Message 0: " + "SUCCESS");
+    }
+    else
+    {
+      System.out.println("Message 0: " + "FAILURE");
+    }
+
+    if(client3.sendMessage("grapes") == true)
+    {
+      System.out.println("Message 1: " + "SUCCESS");
+    }
+    else
+    {
+      System.out.println("Message 1: " + "FAILURE");
+    }
+
+    if(client3.sendMessage("kiwi") == true)
+    {
+      System.out.println("Message 2: " + "SUCCESS");
+    }
+    else
+    {
+      System.out.println("Message 2: " + "FAILURE");
+    }
+
+    if(client3.sendMessage("end") == true)
+    {
+      System.out.println("Message 2: " + "SUCCESS");
+    }
+    else
+    {
+      System.out.println("Message 2: " + "FAILURE");
+    }
+    client3.close();
+    System.out.println("CHECKPOINT 3 TEST DONE. ");
   }
 
   public static void Check4() {

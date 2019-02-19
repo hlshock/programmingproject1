@@ -11,5 +11,8 @@ public class ServerTesting {
     System.out.println("\nServer Checkpoint 2:");
     Server server2 = new Server(4445);
     server2.run();
+    System.out.println("\nServer Checkpoint 3:");
+    Server server3 = new Server(4445);
+    server3.run();
   }
 }
