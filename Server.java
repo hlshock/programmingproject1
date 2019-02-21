@@ -5,20 +5,33 @@ import java.net.InetAddress;
 
 public class Server {
 
+  /**
+   * serverSocket: the DatagramSocket through which the server communicates
+   * receivePacket: DatagramPacket used for receiving messages
+   * sendPacket: DatagramPacket used for sending responses
+   */
   DatagramSocket serverSocket;
   DatagramPacket receivePacket;
   DatagramPacket sendPacket;
 
+  /**
+   * byte arrays used to recieve messages and send responses
+   */
   byte[] receiveData;
   byte[] sendData;
 
+  /**
+   * counter used so server can distinguish whether or not to "do" the requested
+   * action, in our program "doing" a request is simply incrementing this counter
+   */
   int serverCounter;
 
-  boolean testing = true;
+  //testing purposes, set to true to display more tesing output in terminals
+  boolean testing = false;
 
   /**
   * Sets up the server so it can receive messages from a specified port
-  * @param portNum
+  * @param portNum: port number to connect to
   */
   public Server(int portNum) {
     try {
@@ -29,7 +42,7 @@ public class Server {
     }
   }
   /**
-  * Starts the server listening on its port
+  * Starts the server listening on its port, receives messages and sends responses
   */
   public void run() {
     //continues looping until message containing "end" is received
@@ -58,24 +71,30 @@ public class Server {
         }
         //check for "end" request - don't need to send response
         if(receivedMessage.getMessageContents().equals("end")) {
-          System.out.println("End message recevied...");
+          if (testing) {
+            System.out.println("End message recevied...");
+          }
           continueReceiving = false;
         }
         //server checks message's counter
         if(receivedMessage.getSequenceCounter() == serverCounter)
         {
           // increments counter if this is a new message (not received by server before)
-          System.out.println("Incremented server counter, counter = " + serverCounter);
+          if(testing) {
+            System.out.println("Incremented server counter, counter = " + serverCounter);
+          }
           serverCounter++;
         }
         //sending response - unsure about this part
         InetAddress address = receivePacket.getAddress();
         int port = receivePacket.getPort();
-        //reply with same sentence
+        //reply with uppercase message
         sendData = receivedMessage.getMessageContents().trim().toUpperCase().getBytes();
         sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
         serverSocket.send(sendPacket);
-        System.out.println("\nResponse sent...");
+        if (testing) {
+          System.out.println("\nResponse sent...");
+        }
       } catch (Exception e) {
         e.printStackTrace();
       }

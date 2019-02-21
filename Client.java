@@ -5,19 +5,35 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 public class Client {
+
+  /**
+   * clientSocket: the DatagramSocket through which the client communicates
+   * receivePacket: DatagramPacket used for receiving responses
+   * sendPacket: DatagramPacket used for sending messages
+   */
   DatagramSocket clientSocket;
   DatagramPacket sendPacket;
   DatagramPacket receivePacket;
 
+  /**
+   * byte arrays used to send messages and receive responses
+   */
   byte[] receiveData;
 
+  /**
+   * port: stores port number that Server is connected to
+   * hostname: stores hostname
+   * messageCounter: used to keep track of how many messages are sent
+   */
   int port;
   String hostname;
   int messageCounter;
 
-  boolean testing = true;
+  //testing purposes, set to true to display more tesing output in terminals
+  boolean testing = false;
 
   /**
+   * Sets up the client so it can send messages to a single server
   *@param hostname
   *@param port
   */
@@ -36,6 +52,11 @@ public class Client {
     }
   }
 
+  /**
+   * Sends a message to the server
+   * @param  message [description]
+   * @return true when the message is successfully sent
+   */
   public boolean sendMessage(String message)
   {
     boolean result = false;
@@ -52,13 +73,11 @@ public class Client {
       //create message to send
       Message messageToSend = new Message(message, messageCounter);
       boolean contSending = true;
-      //create packet to send message
+      //create packets to send message and recieve response
       sendPacket = new DatagramPacket(messageToSend.getBytes(), messageToSend.getBytes().length, InetAddress.getByName(hostname), port);
-      //create packet to receive response
       receivePacket = new DatagramPacket(receiveData, receiveData.length);
       //keep sending until response is received
       while(contSending == true) {
-        //send packet
         clientSocket.send(sendPacket);
         //if message is not "end", wait for response
         if(message != "end")
@@ -66,15 +85,21 @@ public class Client {
           try {
             //receive response
             clientSocket.receive(receivePacket);
-            System.out.println("\nResponse received...");
+            if(testing) {
+              System.out.println("\nResponse received...");
+            }
             Message responseMessage = new Message(receivePacket.getData());
             String messageString = responseMessage.getMessageContents().trim();
             String testMessage = message.trim();
-            System.out.println("Response contents: " + messageString);
-            System.out.println("Original Message contents: " + testMessage);
+            if(testing) {
+              System.out.println("Response contents: " + messageString);
+              System.out.println("Original Message contents: " + testMessage);
+            }
             //test if response is same as message
             boolean match = messageString.equals(testMessage.toUpperCase());
-            System.out.println("Message/Response Match = " + match);
+            if(testing) {
+              System.out.println("Message/Response Match = " + match);
+            }
             if(match)
             {
               result = true;
@@ -102,20 +127,33 @@ public class Client {
     }
     return result;
   }
-
+  /**
+   * if a message is longer than 255 characters, it must be split up and sent
+   * in sections, this method splits up and sends all the pieces of a long message
+   * @param  m full message to send
+   * @return   true when whole message is successfully sent in pieces
+   */
   private boolean sendLongMessage(String m){
-      for (int i = 0; i < m.length(); i+=255){
+    for (int i = 0; i < m.length(); i+=255){
+      if((i + 256) > m.length()) {
+        sendMessage(m.substring(i));
+      }
+      else {
         sendMessage(m.substring(i, i+255));
       }
-      return true;
+    }
+    return true;
   }
-
+  /**
+   * Closes the connection to the server
+   * @return true when successfully closed
+   */
   public boolean close(){
     boolean result = false;
     try{
       clientSocket.close();
       result = true;
-    }catch (Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
     return result;

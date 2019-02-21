@@ -7,6 +7,8 @@ public class NetworkTesting {
     System.out.println("Network Checkpoint 3 Testing:");
     UnreliableNetwork network2 = new UnreliableNetwork(4445, 50, 50);
     network2.run();
-    //UnreliableNetwork network3 = new UnreliableNetwork(4445, 50, 50)
+    System.out.println("Network Checkpoint 4 Testing:");
+    UnreliableNetwork network3 = new UnreliableNetwork(4445, 50, 50);
+    network3.run();
   }
 }
