@@ -2,7 +2,8 @@ import java.io.*;
 import java.net.*;
 import java.util.Random;
 
-public class DropResponses {
+public class DropMessagesNetwork {
+
   DatagramSocket networkSocket;
 
   DatagramPacket receivePacket;
@@ -18,8 +19,8 @@ public class DropResponses {
 
   int dropRate;
 
-  public DropResponses(int serverPortNum, int drop) {
-    System.out.println("Unreliable Network running...");
+  public DropMessagesNetwork(int serverPortNum, int drop) {
+    System.out.println("Network running (will drop messages " + drop + "% of the time)");
     this.serverPortNum = serverPortNum;
     dropRate = drop;
     //what port number do we use?
@@ -62,7 +63,8 @@ public class DropResponses {
           networkSocket.send(sendPacket);
           continueReceiving = false;
         }
-        else {
+        //drop packet depending on inputted drop rate
+        else if(rand.nextInt(100) >= dropRate ) {
           System.out.println("Forwarding Message...");
           //forward message - WORKS
           sendData = receivePacket.getData();
@@ -76,17 +78,13 @@ public class DropResponses {
           System.out.println("Contents: " + reaMessage.getMessageContents());
           serverPortNum = receivePacket.getPort();
           System.out.println("Received from Port #" + serverPortNum);
-          //drop response depending on inputted drop rate
-          if(rand.nextInt(100) >= dropRate ) {
-            //forward response to server
-            System.out.println("Forwarding Response to Client...");
-            sendData = receivePacket.getData();
-            sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("localhost"), clientPortNum);
-            networkSocket.send(sendPacket);
-          }
-          else {
-            System.out.println("Dropped Response...");
-          }
+          //forward response to server
+          sendData = receivePacket.getData();
+          sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("localhost"), clientPortNum);
+          networkSocket.send(sendPacket);
+        }
+        else {
+          System.out.println("Dropped Message...");
         }
       }
       catch (Exception e) {

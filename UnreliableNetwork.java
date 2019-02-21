@@ -3,7 +3,6 @@ import java.net.*;
 import java.util.Random;
 
 public class UnreliableNetwork {
-
   DatagramSocket networkSocket;
 
   DatagramPacket receivePacket;
@@ -17,12 +16,14 @@ public class UnreliableNetwork {
 
   boolean testing = true;
 
-  int dropRate;
+  int dropResponsesRate;
+  int dropMessagesRate;
 
-  public UnreliableNetwork(int serverPortNum, int drop) {
-    System.out.println("Unreliable Network running...");
+  public UnreliableNetwork(int serverPortNum, int dropResponsesRate, int dropMessagesRate) {
+    System.out.println("Network running (will drop messages " + dropMessagesRate + "% of the time and drop responses + " + dropResponsesRate+ "% of the time)");
     this.serverPortNum = serverPortNum;
-    dropRate = drop;
+    this.dropResponsesRate = dropResponsesRate;
+    this.dropMessagesRate = dropMessagesRate;
     //what port number do we use?
     try{
       networkSocket = new DatagramSocket(4444);
@@ -54,7 +55,6 @@ public class UnreliableNetwork {
         System.out.println("Received from Port #" + clientPortNum);
         // if message is ending message, forward it (don't drop)
         if(reMessage.getMessageContents().trim().equals("end")) {
-
           //forard message and exit
           System.out.println("End Message Received, forwarding...");
           //forward message - WORKS
@@ -63,8 +63,8 @@ public class UnreliableNetwork {
           networkSocket.send(sendPacket);
           continueReceiving = false;
         }
-        //drop packet depending on inputted drop rate
-        else if(rand.nextInt(100) >= dropRate ) {
+        //forward message
+        else if(rand.nextInt(100) >= dropMessagesRate ) {
           System.out.println("Forwarding Message...");
           //forward message - WORKS
           sendData = receivePacket.getData();
@@ -78,10 +78,17 @@ public class UnreliableNetwork {
           System.out.println("Contents: " + reaMessage.getMessageContents());
           serverPortNum = receivePacket.getPort();
           System.out.println("Received from Port #" + serverPortNum);
-          //forward response to server
-          sendData = receivePacket.getData();
-          sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("localhost"), clientPortNum);
-          networkSocket.send(sendPacket);
+          //drop response depending on inputted drop rate
+          if(rand.nextInt(100) >= dropResponsesRate ) {
+            //forward response to server
+            System.out.println("Forwarding Response to Client...");
+            sendData = receivePacket.getData();
+            sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("localhost"), clientPortNum);
+            networkSocket.send(sendPacket);
+          }
+          else {
+            System.out.println("Dropped Response...");
+          }
         }
         else {
           System.out.println("Dropped Message...");
